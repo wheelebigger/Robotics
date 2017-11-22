@@ -91,7 +91,7 @@ public class SideTest
 			for(int i=0;i<100&&sampledistside[0]<0.2;)
 			{
 				newpose = Poseo.getPose();
-				naviBot.addWaypoint(newpose.getX()+i*5f,newpose.getY(),newpose.getHeading());
+				naviBot.addWaypoint(newpose.getX()+5f,newpose.getY(),newpose.getHeading());
 				naviBot.followPath();
 				LCD.drawInt(i, 1, 1);
 				if(naviBot.waitForStop())

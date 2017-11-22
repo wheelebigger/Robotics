@@ -27,7 +27,7 @@ import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 import lejos.hardware.Button;
 
-public class MotherOfAllTests
+public class WhileTest
 {
 	static RegulatedMotor leftm = new EV3LargeRegulatedMotor(MotorPort.A); //motor 1
 	static RegulatedMotor rightm = new EV3LargeRegulatedMotor(MotorPort.B); //motor 2
@@ -79,22 +79,26 @@ public class MotherOfAllTests
 		int fx = 200;
 		int fy = 0;
 		
+		Pose start = new Pose();
+		//start = Poseo.getPose();
+		//Poseo.setPose(start);
+		Pose newpose = new Pose();
 		
+		//naviBot.addWaypoint(start.getX()+fx,start.getY()+fy);
+		naviBot.addWaypoint(fx,fy);
+		naviBot.followPath();
+		LCD.drawString("start", 1, 1);
 		
 		while(true)
 		{
 			
-			Pose start = new Pose();
-			//start = Poseo.getPose();
-			Pose newpose = new Pose();
-			naviBot.addWaypoint(fx,fy);
-			naviBot.followPath();
-			LCD.drawString("start", 1, 1);
+			
+			
 			
 			//Thread.sleep(500);
 				distanceside.fetchSample(sampledistside, 0);
 				distancefront.fetchSample(sampledistfront,0);
-				if(sampledistfront[0]<0.2)
+				if(sampledistfront[0]<0.2&&sampledistside[0]>0.2)
 				{
 					LCD.clear();
 					LCD.drawString("ifFront", 1, 1);
@@ -110,29 +114,37 @@ public class MotherOfAllTests
 					
 					naviBot.addWaypoint(newpose.getX()+/*1f**/turnLeft.x,newpose.getY()+/*1f**/turnLeft.y);
 					naviBot.followPath();
-					//Thread.sleep(500);
-					
-				}
-				distanceside.fetchSample(sampledistside, 0);
-				//Thread.sleep(500);
-				for(int i=0;i<100&&sampledistside[0]<0.2;)
+					if(naviBot.waitForStop()) {
+						distancefront.fetchSample(sampledistfront,0);
+						distanceside.fetchSample(sampledistside, 0);
+						Thread.sleep(100);
+					}
+				}else if(sampledistside[0]<0.2&&sampledistfront[0]>0.2)
 				{
 					LCD.clear();
 					LCD.drawString("forSide", 1, 1);
 					naviBot.clearPath();
 					newpose = Poseo.getPose();
-					//Thread.sleep(100);
+					Thread.sleep(100);
 					naviBot.addWaypoint(newpose.getX()+5f,newpose.getY(),newpose.getHeading());
 					naviBot.followPath();
-					LCD.drawInt(i, 1, 1);
-					if(naviBot.waitForStop())
-					{
-						i++;
+					if(naviBot.waitForStop()){
+						distanceside.fetchSample(sampledistside, 0);
+						distancefront.fetchSample(sampledistfront,0);
+						Thread.sleep(100);
+						/*if(sampledistside[0]>0.2)
+						{
+							newpose = Poseo.getPose();
+							Thread.sleep(100);
+							naviBot.addWaypoint(newpose.getX()+10f,newpose.getY(),newpose.getHeading());
+							naviBot.addWaypoint(start.getX()+fx,start.getY()+fy);
+							naviBot.followPath();
+						}*/
 					}
-					distanceside.fetchSample(sampledistside, 0);
+						
 				}
 				
-
+				
 				
 					/*LCD.clear();
 					LCD.drawString("what", 1, 1);
