@@ -103,11 +103,10 @@ public class Newtest
 					Point turnRight = polarHeading(90,newpose);
 					
 					
-					
 					naviBot.addWaypoint(newpose.getX()+40f*turnLeft.x,newpose.getY()+40f*turnLeft.y);
 					//Delay.msDelay(100);
-					naviBot.addWaypoint(start.getX()+fx,start.getY()+fy);
-					
+					//naviBot.addWaypoint(start.getX()+fx,start.getY()+fy);
+					naviBot.addWaypoint(fx,fy);
 					naviBot.followPath();
 					Thread.sleep(500);
 					

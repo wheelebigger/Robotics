@@ -106,11 +106,8 @@ public class WhileTest
 					naviBot.clearPath();
 					newpose = Poseo.getPose();
 					
-					
 					Point turnLeft = polarHeading(-90,newpose);
-					Point turnRight = polarHeading(90,newpose);
-					
-					
+					//Point turnRight = polarHeading(90,newpose);
 					
 					naviBot.addWaypoint(newpose.getX()+/*1f**/turnLeft.x,newpose.getY()+/*1f**/turnLeft.y);
 					naviBot.followPath();
